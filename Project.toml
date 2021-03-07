@@ -1,0 +1,6 @@
+[deps]
+FisherySim = "c2a90378-fa76-5799-9c4c-bbfd1330d11a"
+SpatQSims = "baf29d45-b477-4558-8186-4051bce8e0df"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
+TweedieDistributions = "074c098c-c2ce-40ce-9d8c-a479c1fc98cf"
