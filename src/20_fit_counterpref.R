@@ -23,8 +23,8 @@ optcontrol <- list(eval.max = 1000L, iter.max = 750L)
 ## Names of the operating models
 opmods <- 1:5
 ## Names of the estimation models
-estmods <- c(# "comm500",
-             # "comm1000",
+estmods <- c("comm500",
+             "comm1000",
              "comm2000")
 
 ## List all possible combinations of OM/EM in given replicate range
