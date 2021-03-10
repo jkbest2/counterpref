@@ -1,0 +1,99 @@
+---
+title: "Designing a survey around fishery-dependent data"
+subtitle: "FISH 507B project proposal"
+author: John Best
+bibliography: fish507b.bib
+output:
+    xaringan::moon_reader:
+        lib_dir: libs
+        nature:
+            highlightStyle: github
+            countIncrementalSlides: false
+---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      fig.align = "center",
+                      fig.height = 6,
+                      dev = "svg")
+```
+
+# Fishery-dependent data in indices of abundance
+
+- Catchability
+- Preferential sampling
+
+---
+
+## A spatial abundance process
+
+```{r}
+knitr::include_graphics("figs/gp.svg")
+```
+
+---
+
+## Observing the abundance process
+
+```{r}
+knitr::include_graphics("figs/25_robs_gp.svg")
+```
+
+---
+
+## 25 preferential observations
+
+```{r}
+knitr::include_graphics("figs/25_obs_gp.svg")
+```
+
+---
+
+## 50 preferential observations
+
+```{r}
+knitr::include_graphics("figs/50_obs_gp.svg")
+```
+
+---
+
+## 25 preferential, 5 gridded observations
+
+```{r}
+knitr::include_graphics("figs/5_grid_gp.svg")
+```
+
+---
+
+
+## 25 preferential, 10 gridded observations
+
+```{r}
+knitr::include_graphics("figs/10_grid_gp.svg")
+```
+
+---
+
+## 25 preferential, 5 counter-preferential observations
+
+```{r}
+knitr::include_graphics("figs/5_counter_gp.svg")
+```
+
+---
+
+## 25 prefernetial, 10 counter-preferential observations
+
+```{r}
+knitr::include_graphics("figs/10_counter_gp.svg")
+```
+
+---
+
+# Practical issues
+
+- In two dimensions
+
+- Need to estimate catchability differences
+
+- More complicated observation model

@@ -1,4 +1,8 @@
 sims/
+libs/
+figs/
+*.docx
+*.pdf
 
 # Created by https://www.toptal.com/developers/gitignore/api/r,julia
 # Edit at https://www.toptal.com/developers/gitignore?templates=r,julia
