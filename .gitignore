@@ -76,3 +76,6 @@ vignettes/*.pdf
 
 # End of https://www.toptal.com/developers/gitignore/api/r,julia
 n
+/figs/
+/docs/libs/
+*.html

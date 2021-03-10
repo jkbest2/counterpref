@@ -1,0 +1,261 @@
+---
+title: "Designing a survey around fishery-dependent data"
+subtitle: "FISH 507B"
+author: John Best
+output:
+    xaringan::moon_reader:
+        lib_dir: libs
+        nature:
+            highlightStyle: github
+            countIncrementalSlides: false
+---
+
+# We need indices of abundance
+
+- Usually derived from survey data
+
+- Inform stock assessments
+
+---
+
+# Many fisheries have fishery-dependent observations
+
+- These are not usually used if fishery-independent observations are available
+
+- But may be far more numerous
+
+--
+
+- More difficult to standardize CPUE
+
+--
+
+- **Preferential sampling** - fishermen tend to fish where there are more fish!
+
+---
+
+# Can we counter preferential sampling with careful survey design?
+
+- How does bias decrease with additional counter-preferential survey observations?
+
+- How do catchability estimates and catchability variance estimates vary with different levels of sampling overlap?
+  
+$$\renewcommand{\vec}[1]{\boldsymbol{#1}}$$
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE,
+                      out.width = "100%",
+                      out.height = "100%",
+                      fig.align = "center")
+```
+
+---
+
+# Operating model
+
+```{r}
+knitr::include_graphics("../figs/abundcatch_tots.svg")
+```
+
+---
+
+## Operating model sequence
+
+0. **Intialize** population at carrying capacity, spatial equilibrium.
+1. **Harvest biomass** via survey (fixed survey stations in order) and commercial (preferential targeting) vessels.
+2. **Produce** biomass via regional Beverton-Holt model.
+3. **Move** toward more-preferred habitats.
+4. **Repeat** from 2.
+
+---
+
+## Habitat
+
+```{r}
+knitr::include_graphics("../figs/habitat.svg")
+```
+
+---
+
+## Initial abundance distribution
+
+```{r}
+knitr::include_graphics("../figs/initial_abundance.svg")
+```
+
+---
+
+## Preferential sampling
+
+```{r}
+knitr::include_graphics("../figs/commercial_effort.svg")
+```
+
+---
+
+## Counter-preferential sampling
+
+```{r}
+knitr::include_graphics("../figs/station_prob.svg")
+```
+
+---
+
+## Counter-preferential sampling - 50 survey stations
+
+```{r}
+knitr::include_graphics("../figs/survey_effort_50.svg")
+```
+
+---
+
+## Counter-preferential sampling - 100 survey stations
+
+```{r}
+knitr::include_graphics("../figs/survey_effort_100.svg")
+```
+
+---
+
+## Counter-preferential sampling - 200 survey stations
+
+```{r}
+knitr::include_graphics("../figs/survey_effort_200.svg")
+```
+
+---
+
+## Counter-preferential sampling - 300 survey stations
+
+```{r}
+knitr::include_graphics("../figs/survey_effort_300.svg")
+```
+
+---
+
+## Counter-preferential sampling - 400 survey stations
+
+```{r}
+knitr::include_graphics("../figs/survey_effort_400.svg")
+```
+
+---
+
+## Abundance series
+
+```{r}
+knitr::include_graphics("../figs/abundance_series.svg")
+```
+
+---
+
+## Estimation model
+
+$$\log \vec{n} = \vec{X}\vec{\beta} + \vec{\Gamma}\vec{\lambda} + \vec{A}_{\omega}\vec{\omega}$$
+
+- $n$: biomass
+- $\vec{X}\vec{\beta}$: Year effects
+- $\vec{\Gamma}\vec{\lambda}$: Vessel effects
+- $\vec{A}_\omega\vec{\omega}$: Spatial random effects
+
+--
+
+$$c_{i} \sim \operatorname{Tweedie}(n_{i}, \phi, p)$$
+
+- $c_{i} \ge 0$: Catch biomass observations
+- $\phi > 0$: Dispersion parameter
+- $1 < p < 2$: Shape parameter
+
+---
+
+## Estimation model
+
+$$\hat{I}_{y} = \sum_{s \in \mathcal{S}} w_{s} \exp(\vec{X}^{*}_{y}\hat{\vec{\beta}} + \vec{A}^{*}_{\omega} \hat{\vec{\omega}})$$
+
+- $\hat{I}_y$: Estimated index for year $y$
+- $\mathcal{S}$: Spatial domain
+- $\vec{X}^*\hat{\vec{\beta}}$: Projected year effect
+- $\vec{A}^*_\omega\hat{\vec{\omega}}$: Projected spatial effect
+
+---
+
+## Simulation study
+
+- 25 replicates
+- Linear abundance commercial location preference
+- 50, 100, 200, 300, or 400 survey stations
+- Commercial fishing effort constant at 2000
+- 500, 1000, or 2000 commercial observations used in estimation model
+
+---
+
+## Evaluation
+
+- Index bias
+- Index RMSE
+- Index coverage
+- Vessel effect estimates
+- Vessel effect variance
+
+---
+
+# Results
+
+---
+
+## Index bias
+
+```{r}
+knitr::include_graphics("../figs/bias_plot2.svg")
+```
+
+---
+
+## Index RMSE
+
+```{r}
+knitr::include_graphics("../figs/rmse_plot.svg")
+```
+
+---
+
+## Index calibration
+
+```{r}
+knitr::include_graphics("../figs/calibration.svg")
+```
+
+---
+
+## Vessel effect estimate
+
+```{r}
+knitr::include_graphics("../figs/lambda_val.svg")
+```
+
+---
+
+## Variance of vessel effect
+
+```{r}
+knitr::include_graphics("../figs/lambda_sd.svg")
+```
+
+---
+
+# Conclusions
+ 
+- Bias can be reduced through counter-preferential sampling
+
+- Vessel effects may be biased under preferential sampling
+
+
+## Further work
+
+- Optimal counter-preferential sampling designs
+
+- Designs robust against shifting commercial effort distribution
+
+- Estimate selectivity differences
+
+- Multispecies settings
