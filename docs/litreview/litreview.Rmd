@@ -1,0 +1,230 @@
+---
+title: "Intercalibration of survey methods using paired fishing operations and log-Gaussian Cox processes"
+author: Thygesen, U.H., Kristensen, K., Jansen, T., Beyer, J.E.
+date: 2019
+bibliography: ../fish507b.bib
+output:
+    xaringan::moon_reader:
+        lib_dir: libs
+        nature:
+            highlightStyle: github
+            countIncrementalSlides: false
+---
+
+```{r include=FALSE}
+library(tidyverse)
+knitr::opts_chunk$set(echo = FALSE,
+                      fig.align = "center",
+                      fig.height = 6,
+                      dev = "svg")
+```
+
+Thygesen, U.H., Kristensen, K., Jansen, T., Beyer, J.E., 2019. Intercalibration of survey methods using paired fishing operations and log-Gaussian Cox processes. ICES J. Mar. Sci. https://doi.org/10/ggkqsj
+
+---
+
+# Study goals
+
+- Intercalibrate size selectivity and catchability between two survey vessels
+  based on paired fishing operations.
+
+- Use a log-Gaussian Cox process to model counts
+
+- Account for overdispersion, aggregation, and dependence among size classes
+
+- Look at two hake species off the coast of Namibia
+
+```{r, out.width = 450, out.height = 300}
+knitr::include_graphics("figs/rv_nansen.png")
+```
+
+---
+
+# Notation
+
+## Indices
+
+- $i$: station index
+- $j$: vessel index
+- $k$: length group
+
+---
+
+## Observed quantities
+
+$N_{ijk}$: number of fish at station $i$ caught by vessel $j$ in size group $k$
+
+$A_{ij}$: Area swept at station $i$ by vessel $j$
+
+---
+
+## Latent quantities
+
+$\Phi_{ik}$: abundance of size class $k$ at station $i$
+
+$R_{ijk}$: haul-specific variation
+
+$S_{jk}$: selectivity of vessel $j$ on size class $k$
+
+???
+
+Note that $\Phi_{ik}$ is shared between vessels
+
+---
+
+## Statistical model
+
+$$N_{ijk} \mid \Phi, R, S \sim \operatorname{Poisson}(A_{ij} \exp(\Phi_{ik} + R_{ijk} + S_{jk}))$$
+
+- Allows for overdispersion
+- Allows for correlation structure
+- $\Phi_{ik} + R_{ijk} + S_{jk}$ is normally-distributed, making this a
+  log-Gaussian Cox process (LGCP)
+
+---
+
+## The selectivity term
+
+Constraint:
+
+$$S_{1k} = -S_{2k}$$
+
+- no base gear
+- symmetric variance
+
+Selectivity ratio (disregarding $R$):
+
+$$\exp(2S_{1k}) = \frac{\mathbb{E}[N_{i1k} / A_{i1} \mid \Phi, S]}{\mathbb{E}[N_{i1k} / A_{i1} \mid \Phi, S]}$$
+
+---
+
+## The selectivity term
+
+Model as a random walk across size classes
+
+$$S_{11} \sim \operatorname{normal}(0, \sigma^{2}_{1})$$
+
+$$S_{1(k + 1)} \mid S_{1k} \sim
+  \operatorname{normal}(S_{1k}, \sigma_{S}^{2}) \quad \text{for}\ k = 1,\ldots,K-1$$
+               
+
+---
+
+## The size distribution
+
+$$\Phi_{i1} \sim \operatorname{normal}(0, \sigma_{1}^{2})$$
+
+$$\Phi_{i(k + 1)} \mid \Phi_{ik} \sim \operatorname{normal}(\Phi_{ik}, \sigma_{\Phi}^{2})$$
+
+The choice to use $\sigma_{1}^{2} = 10$ and unconstrained random walks here and
+for selectivity is interesting.
+
+???
+
+- random walks produce a *continuous* function, so you don't need to worry about
+  binning your length data!
+
+- 95% prior mass of Poisson rates for age class 1 would be $`r exp(qnorm(0.025, 0, 10))`$ to $`r exp(qnorm(0.975, 0, 10))`$
+
+---
+
+## The "nugget" effect
+
+Could represent variation due to aggregations.
+Allows for overdispersion.
+
+$$R_{ijk} = R_{ijk}^{AR} + R_{ijk}^{WN}$$
+
+$$R_{ijk}^{WN} \sim \operatorname{normal}(0, \sigma^{2}_{WN})$$
+
+$$R_{ijk}^{AR} \mid R_{ij(k - 1)}^{AR},\rho \sim \operatorname{normal}(\rho R_{ij(k - 1)}^{AR}, \sigma^{2}_{AR})$$
+
+???
+
+- Nugget could be variance due to abundance (as proposed here), or catchability.
+- Not possible to attribute.
+
+Note that:
+- density is correlated among size classes at a given station
+- selectivity is correlated among size classes for a given vessel
+- nugget is correlated among size classes for a given station *and* vessel
+
+---
+
+# Implementation
+
+- Maximum likelihood
+
+- Coded in TMB
+
+- Random effects $\Phi$, $R$, and $S$ marginalized out using Laplace approximation
+
+- Verified through simulation
+
+- Some issues estimating variance components
+
+---
+
+# Case study
+
+.pull-left[
+Namibian hake trawl surveys
+
+- 1990-2000: R/V Dr. Fridtjof Nansen
+- 1998- : F/V Blue Sea
+]
+
+.pull-right[
+```{r}
+knitr::include_graphics("figs/namibia_survey_stations.png", dpi = 175)
+```
+]
+
+---
+
+## Results
+
+- F/V Blue sea is more efficient at catching large size hake
+
+- F/V Blue Sea less efficient at catching small *M. paradoxus*
+
+- Small *M.capensis* selectivity similar
+
+- More variation in *M. paradoxus* among size classes
+
+- Possible that more variance is place on the nugget for *M. capensis*
+
+---
+
+## Results
+
+AIC preferred separate curves for the two species.
+
+```{r}
+knitr::include_graphics("figs/selectivity_curves.png")
+```
+
+---
+
+## Results
+
+The autoregressive component in $R$ was also included.
+
+```{r}
+knitr::include_graphics("figs/selectivity_notgood.png")
+```
+
+---
+
+# Discussion
+
+- Can this be extended to the unpaired-tow case?
+
+- Extending $\Phi$ into space could allow intercalibration of selectivity among
+  survey and fishery vessels.
+
+- This would be computationally much more involved.
+
+---
+
+# Questions?
