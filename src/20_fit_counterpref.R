@@ -23,9 +23,8 @@ optcontrol <- list(eval.max = 1000L, iter.max = 750L)
 ## Names of the operating models
 opmods <- 1:5
 ## Names of the estimation models
-estmods <- c("comm500",
-             "comm1000",
-             "comm2000")
+estmods <- c("comm500x", "comm1000x", "comm2000x",
+             "comm500", "comm1000", "comm2000")
 
 ## List all possible combinations of OM/EM in given replicate range
 specify_fits <- function(study, repls, opmods, estmods, root_dir = "sims") {
@@ -50,6 +49,9 @@ fits_todo <- function(fit_spec, result_root = "sims") {
 ## How many observations to use from each ?
 specify_subset <- function(estmod) {
   sub_df <- switch(estmod,
+                   comm500x = data.frame(vessel_idx = c(1, 2), n = c(0, 500)),
+                   comm1000x = data.frame(vessel_idx = c(1, 2), n = c(0, 1000)),
+                   comm2000x = data.frame(vessel_idx = c(1, 2), n = c(0, 2000)),
                    comm500 = data.frame(vessel_idx = 2, n = 500),
                    comm1000 = data.frame(vessel_idx = 2, n = 1000),
                    comm2000 = data.frame(vessel_idx = 2, n = 2000))
