@@ -22,8 +22,9 @@ abundance has the potential to increase the precision of these indices.
 
 Moving from an index of abundance that uses fishery-independent data exclusively
 to one that also includes fishery-dependent data is not without pitfalls.
-Fishery-dependent data are not collected using a defined sampling procedure.
-This may result in higher variance of catches (e.g. among vessels). Fishing
+Fishery-dependent data are not collected using a standardized sampling
+procedure. Fishery-dependent catches are then subject to additional sources of
+variation that may result in increased bias and/or variance in catches. Fishing
 locations are also chosen for their potential profit rather according to a
 specified design. This targeting behavior may result in a preferential sample,
 where only areas with higher biomass of the targeted species are sampled by the
@@ -35,31 +36,30 @@ perspective though admittedly not a logistical perspective) would be to design a
 survey that accounts for the weaknesses of the fishery-dependent observations.
 
 At one extreme, survey locations could be chosen so that overall sampling effort
-is roughly uniform throughout the domain, eliminating the observation location
-preference. This would generally require an excessive amount of survey effort. A
-second option would be to overlay a standard survey grid over the domain of
-interest, as is currently done. This would ensure samples outside the area where
+is uniform throughout the domain, eliminating the observation location
+preference. This would require an excessive amount of survey effort. A second
+option would be to overlay a standard survey grid over the domain of interest,
+as is currently done. This would ensure samples outside the area where
 fishery-dependent data is abundant, but apportions survey effort in a way that
 does not account for the fishery-dependent samples. In between these options, a
 survey design with greater sampling intensity in under-fished areas can fill in
-information where it is most needed. Any successful survey that intends to
-integrate fishery-dependent and -independent observations will need to allow
-enough spatial overlap between the two so that differences in catchability may
-be estimated. Sampling away from a species' area of highest abundance can also
-aid in establishing the limits of a species' range, and provide additional
-information about species that are not the target of commercial fisheries.
-Survey design under preferential sampling has been studied in the case where the
-preference is meant to be preserved [@daSilvaFerreiraGamerman2015], designing a
-survey specifically to *counteract* the effects of preferential sampling has not
-been addressed.
+information where it is most needed. The need to estimate differences in
+catchability among vessels requires some spatial overlap however. Sampling away
+from a species' area of highest abundance can also aid in establishing the
+limits of a species' range, and provide additional information about species
+that are not the target of commercial fisheries. Survey design under
+preferential sampling has been studied in the case where the preference is meant
+to be preserved [@daSilvaFerreiraGamerman2015], designing a survey specifically
+to counteract the effects of preferential sampling has not been addressed.
 
-There are two key questions. The first is how the number of
+Two questions are addressed here. The first is how the number of
 counter-preferentially chosen survey stations affects the bias of an index of
 abundance estimated with varying numbers of fishery-dependent observations. The
 second question is how well differences in catchability between the
 fishery-dependent and -independent vessels can be estimated when the survey
 stations are chosen counter-preferentially and thus will have less overlap with
-the fishery-dependent data.
+the fishery-dependent data. These are key when determining whether a survey with
+counter-preferentially chosen stations could be effective.
 
 # Methods
 
@@ -96,7 +96,7 @@ illustrated in figure {@fig:init_abund}.
 Fishery-independent survey stations were also chosen at random (without
 replacement) from a 400-station regular grid over the spatial domain. Depending
 on the scenario, 50, 100, 200, 300, or all 400 stations were chosen. The
-probaiblity $p_{surv}(s)$ of a station being chosen was based on the sum of the
+probability $p_{surv}(s)$ of a station being chosen was based on the sum of the
 abundance of the 25 nearest cells, $n^*(s)$. Weights were inverted so that
 stations with lower abundance had a higher probability of being chosen, based on
 the overall mean $\bar{n}^*$, plus a constant $k$ so that all of the weights are
@@ -125,7 +125,7 @@ events occur in random order. Catchability for both vessels is fixed at 0.2, and
 cells may become locally depleted within each season. Catch observations are
 simulated using a compound Poisson gamma distribution, a special case of the
 Tweedie distribution [@Tweedie1984; @Shono2008]. This allows for catches that
-are exactly zero or positive. In this case the Tweedi dispersion parameter
+are exactly zero or positive. In this case the Tweedie dispersion parameter
 $\phi$ is fixed to $1.2$ and the Tweedie shape parameter $p$ is fixed to $1.84$.
 
 After harvest, the population produces additional biomass according to a
@@ -185,7 +185,7 @@ observations (selected at random from the 2000 total observations).
 
 Bias is an important component of the error of an index of abundance. a log
 regression of the estimated index on the true total abundance $b_{roey}$ of
-replicate $r$ with operating model $o$, estimation model $e$, andy year $y$,
+ replicate $r$ with operating model $o$, estimation model $e$, and year $y$,
 with appropriate offsets provides a bias estimate $\delta_{oe}$ [@Thorson2015]:
 
 $$\begin{aligned}
@@ -204,7 +204,7 @@ $$\begin{aligned}
 {b}'_t &= \frac{{b}_t}{\exp \sum_t \log {b}_t}.
 \end{aligned}$$
 
-This also allows for evaluation of the coverage of the confindence intervals
+This also allows for evaluation of the coverage of the confidence intervals
 based on the estimated standard errors of the indices.
 
 Bias and error of the vessel effect are more straightforward to evaluate because
@@ -234,10 +234,11 @@ When fishery-dependent effort is distributed preferentially and survey stations
 are allocated counter-preferentially, there will naturally be limited overlap of
 observations. This makes estimating catchability differences between the vessel
 types difficult. In these simulations, there was no difference in catchability
-between the fishery-independent and -dependent vessels. The catchability offset for the fishery-dependent vessels
-($\lambda$) should then be zero. There is a clear bias in the estimate of this
-parameter when few survey stations are used, but it disappears when 300 and 400
-survey stations are used (figure @fig:lambda_val).
+between the fishery-independent and -dependent vessels. The catchability offset
+for the fishery-dependent vessels ($\lambda$) should then be zero. There is a
+clear bias in the estimate of this parameter when few survey stations are used,
+but it disappears when 300 and 400 survey stations are used (figure
+@fig:lambda_val).
 
 ![Density plot of catchability offset for the fishery-dependent vessel over 25 replicates. The
 generative value, $0$, is marked with the dashed line.](../../figs/lambda_val.svg){#fig:lambda_val}
@@ -250,27 +251,65 @@ standard error more than additional fishery-dependent observations (figure @fig:
 
 # Discussion
 
+It is clear from figure @fig:bias_plot2 that additional counter-preferentially
+located survey stations can decrease the bias due to preferential sampling in
+the fishery-dependent observations. However, it appears that when there are many
+more fishery-dependent observations (1000 or 2000) even a grid of survey
+stations that covers the entire domain evenly does not completely eliminate the
+bias in the index estimates. It would be useful to compare the reduction in bias
+with counter-preferentially chosen survey stations to the same number of survey
+stations chosen at random.
 
+Total error in the index estimates reflect both bias and variance. Additional
+observations from either the fishery-dependent or -independent vessels do
+decrease the estimation error, but because the evaluation metrics used here are
+on different scales it is not possible to directly partition these sources of
+error. Different metrics that allow bias and variance to be quantified
+separately would allow the marginal value (at least in terms of estimation
+error) of additional survey stations compared to additional fishery-dependent
+observations.
 
-## Extensions
+One strategy for using fishery-dependent observations that is only partially
+addressed here is to subsample the set of observations. The estimated indices of
+abundance with lowest bias used the fewest number of fishery-dependent
+observations. Taken further, this could be used to choose a set of
+fishery-dependent observations in a way that decreases or eliminates the effects
+of preferential sampling. An alternative would be to keep all of the
+observations, but  down-weight them to get the same effect. This is similar to
+the approach that models the location-selection process as a stochastic point
+process whose intensity function is related to the value of the response at that
+location [@Diggle2010; @daSilvaFerreiraGamerman2015].
 
-To ensure that this project can feasibly be completed in the required timeframe,
-a number of interesting extensions will not be addressed. The first issue is
-that the focus here is on estimating an index of abundance; the sampling
-strategies and evaluation criteria do not account for other data types that may
-not be available from fishery-dependent data. Second, practical implementation
-of these survey designs would require strategies for specifying survey locations
-*before* fishery-dependent effort distribution is known. This may be trivial in
-fisheries that don't change much year-to-year, but it may be necessary to
-include uncertainty in fishery-dependent location preference in order to make
-the strategy robust to spatial shifts in the fishery. Third, this simulation
-study focuses on a single species, which exclusively drives the
-fishery-dependent fishing location preference. Survey designs in this case may
-or may not be optimal when the location preference is driven by other factors
-such as a different species. It would also be interesting to see how these
-strategies fare when the goal is to produce indices of abundance for multiple
-species.
+Bias in the catchability parameter for the fishery-dependent vessel complicate
+the evaluation of the index results seen above. Preferential sampling means that
+fishery-dependent catches are consistently larger than the fishery-independent
+catches. The excess of fishery-dependent observations biases the overall mean
+high. When only 50-200 survey stations are chosen counter-preferentially,
+there is not enough spatial overlap of the two vessels, so the difference in
+catches is attributed to a difference in catchability. Interestingly, the bias
+in this parameter is not dependent on the number of fishery-dependent
+observations that are used.
 
-- marginal information for additional preferential commercial observation vs.
-  additional survey station
+The decrease in standard error of the catchabiltiy parameter estimate with
+additional observations is expected. Figure @fig:lambda_sd shows that additional
+survey stations are more effective at reducing this error than additional
+fishery-dependent observations. This difference is also expected given the high
+level of spatial correlation among the preferentially-sampled fishery-dependent
+observations. This is another case where it would be useful to compare against a
+model with survey stations chosen at random in order to separate the effect of
+spatial correlation and overlap from that of increasing sample sizes.
+
+In conclusion, this approach shows some promise in allowing the use of
+fishery-dependent observations in indices of abundance, but further work is
+necessary to show a real advantage over current practice. Probably the most
+important unaddressed question is quantifying the marginal value of additional
+survey stations. This could then be used to optimize a survey design. This would
+of course have to account for the potential for fishery-dependent effort
+distribution to change over time, and would need to be robust against this.
+Real-world surveys also provide substantially more information than catches of a
+single species. Applying a counter-preferential survey strategy would require
+accounting for the dynamics of multispecies fisheries as well as providing for
+data types that are gathered by fishery-independent surveys but not by
+fishery-dependent vessels.
+
 # References
